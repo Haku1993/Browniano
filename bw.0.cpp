@@ -7,13 +7,12 @@ using namespace std;
 
 
 //-------- global constants----------
-const int N = 100;
-const double G = 9.81; // m/s^2
+const int N = 290;
 const double DT = 0.01; // s^2 -> step size
 const double K = 300.234; // N/m
 const double V = 10; // m/s
-const double Lx=150; // size of the box in X 
-const double Ly=150;// size of the box in Y
+const double Lx=200; // size of the box in X 
+const double Ly=200;// size of the box in Y
 const double long_time=100000; // number of time steps
 unsigned t0, t1; // relog
 
@@ -60,19 +59,18 @@ void print_to_gnuplot(Body bodies[]);
 
 // --------- (( MAIN )) ----------------
 int main(void)
-{ 
-  int a,b;
-  srand(0); //random seed
-
+{   
   std::ofstream fout("datos.txt");
-  
+  int a,b;  
+  srand(0); //random seed
+    
   Body bodies[N];
   for(int i=0; i < N; ++i){
    a= rand()%10;
-   b= rand()%10; 
-   bodies[i].rad = 1;
-   bodies[i].Rx = rand()%100; // random position  in x
-   bodies[i].Ry = rand()%100; // random position in y
+   b= rand()%10;    
+   bodies[i].rad = 5;
+   bodies[i].Rx =1+rand()%(200-1); // random position  in x
+   bodies[i].Ry =1+rand()%(200-1); // random position in y
    bodies[i].Vx = a/(sqrt(a*a+b*b))*V*pow(-1,i) ; // velocidades aleatorias 
    bodies[i].Vy = b/(sqrt(a*a+b*b))*V*pow(-1,i) ;
   }
@@ -88,7 +86,7 @@ int main(void)
 
   for (int it = 0; it < long_time; ++it) {
 
-    fout << DT*it << " , " << 0.5*bodies[0].mass*(bodies[0].Vx*bodies[0].Vx+bodies[0].Vy*bodies [0].Vy)+bodies[0].mass*G*bodies[0].Ry << std::endl; 
+    fout << DT*it << " , " << 0.5*bodies[0].mass*(bodies[0].Vx*bodies[0].Vx+bodies[0].Vy*bodies[0].Vy) << std::endl; 
   
     compute_forces(bodies);
     evolve(bodies, DT);
