@@ -7,7 +7,7 @@ using namespace std;
 
 
 //-------- global constants----------
-const int N = 290;
+const int N = 296;
 const double DT = 0.01; // s^2 -> step size
 const double K = 300.234; // N/m
 const double V = 10; // m/s
@@ -46,6 +46,7 @@ void Body::timestep(double dt)
   Ryold = tmp;
 }
 
+
 // ------ function declarations-----------
 
 void set_masses(Body bodies[]);
@@ -65,10 +66,19 @@ int main(void)
   srand(0); //random seed
     
   Body bodies[N];
-  for(int i=0; i < N; ++i){
+
+// ---- mota de polvo ---  
+   bodies[0].rad = 20;
+   bodies[0].Rx =100; 
+   bodies[0].Ry =100; 
+   bodies[0].Vx = 0; 
+   bodies[0].Vy = 0;
+
+//----- particulas --- 
+  for(int i=1; i < N; ++i){
    a= rand()%10;
    b= rand()%10;    
-   bodies[i].rad = 5;
+   bodies[i].rad = 1;
    bodies[i].Rx =1+rand()%(200-1); // random position  in x
    bodies[i].Ry =1+rand()%(200-1); // random position in y
    bodies[i].Vx = a/(sqrt(a*a+b*b))*V*pow(-1,i) ; // velocidades aleatorias 
@@ -86,7 +96,7 @@ int main(void)
 
   for (int it = 0; it < long_time; ++it) {
 
-    fout << DT*it << " , " << 0.5*bodies[0].mass*(bodies[0].Vx*bodies[0].Vx+bodies[0].Vy*bodies[0].Vy) << std::endl; 
+    fout << DT*it << " , " << sqrt(bodies[0].Rx*bodies[0].Rx+bodies[0].Ry*bodies[0].Ry) << std::endl; 
   
     compute_forces(bodies);
     evolve(bodies, DT);
